@@ -66,7 +66,8 @@ export default {
             totalPages: 0,
             sortOptions: [
                 {value: 'title', name: 'По названию'},
-                {value: 'body', name: 'По описанию'}
+                {value: 'body', name: 'По описанию'},
+                {value: 'id', name: 'По айдишнику'}
             ]
         }
     },
@@ -121,7 +122,15 @@ export default {
     },
     computed: {
         sortedPosts() {
-            return [...this.posts].sort((post1, post2) => post1[this.selectedSort]?.localeCompare(post2[this.selectedSort]));
+            return [...this.posts].sort((post1, post2) => {
+                if (this.selectedSort == 'id') {
+                    console.log(typeof post1[this.selectedSort]);
+                    console.log(typeof post1[this.selectedSort].toString);
+                    post1[this.selectedSort].toString().localCompare(post2[this.selectedSort].toString());
+                } else {                 
+                    post1[this.selectedSort]?.localeCompare(post2[this.selectedSort]);
+                }
+            });
         },
         sortedAndSearchedPosts() {
             return this.sortedPosts.filter(post => post.title.includes(this.searchQuery));
